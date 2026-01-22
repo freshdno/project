@@ -15,9 +15,14 @@
         name: docker
         state: started
         enabled: yes
+    - name: Copy Dockerfile to the remote machine
+      copy:
+        src: /home/serega/project/docker/Dockerfile
+        dest: /home/jenkins/Dockerfile
+        mode: '0644'
 
     - name: Build docker image
-      command: docker build -t project:latest /home/serega/project/docker
+      command: docker build -t project:latest /home/jenkins/
 
     - name: Log in to DockerHub
       docker_login:
