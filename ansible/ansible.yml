@@ -1,0 +1,52 @@
+---
+- name: Preparing the builder
+  hosts: "{{ builder_ip }}"
+  become: true
+  tasks:
+  
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Build docker image
+      command: docker build -t project:latest /home/serega/project/docker
+
+    - name: Log in to DockerHub
+      docker_login:
+        username: "{{ dockerhub_user }}"
+        password: "{{ dockerhub_pass }}"
+
+    - name: Push the Docker image to DockerHub
+      command: docker push project:latest
+
+
+- name: Preparing the prod
+  hosts: "{{ prod_ip }}"
+  become: true
+  tasks:
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start Docker service on prod host
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull the Docker image from DockerHub on prod host
+      command: docker pull project:latest
+
+    - name: Run Docker container on prod host
+      command: docker run -p 8080:8080 -d --name my-container project:latest
