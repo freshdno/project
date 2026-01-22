@@ -45,7 +45,7 @@ resource "yandex_compute_instance" "vm-builder" {
   }
 
   metadata = {
-    user-data = file("/home/serega/meta.txt")
+    ssh-keys = "jenkins:${file("/var/lib/jenkins/.ssh/id_ed25519.pub")}"
   }
 }
 resource "yandex_compute_instance" "vm-prod" {
@@ -66,7 +66,7 @@ resource "yandex_compute_instance" "vm-prod" {
   }
 
   metadata = {
-    user-data = file("/home/serega/meta.txt")
+    ssh-keys = "jenkins:${file("/var/lib/jenkins/.ssh/id_ed25519.pub")}"
   }
 }
 
