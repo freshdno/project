@@ -31,7 +31,7 @@
              steps {
                 script {
                     sh """
-                    ansible-playbook -i ${env.ext_ip_builder},${env.ext_ip_prod}, -u jenkins --private-key /var/lib/jenkins/.ssh/id_ed25519 --extra-vars "builder_ip=${env.ext_ip_builder} prod_ip=${env.ext_ip_prod}" /home/serega/project/ansible/ansible.yml
+                    ansible-playbook -i ${env.ext_ip_builder},${env.ext_ip_prod}, -u jenkins --private-key /var/lib/jenkins/.ssh/id_ed25519 --extra-vars "builder_ip=${env.ext_ip_builder} prod_ip=${env.ext_ip_prod} dockerhub_user=${env.dockerhub_user} dockerhub_pass=${env.dockerhub_pass}" /home/serega/project/ansible/ansible.yml
                     """
                 }
     }
