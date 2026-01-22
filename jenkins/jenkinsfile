@@ -7,7 +7,7 @@
     }
 
     stages {
-        stage('Terraform Deploy') {
+        stage('Terraform deploy') {
             steps {
                 withCredentials([
                     string(credentialsId: 'token',     variable: 'YC_TOKEN'),
@@ -19,11 +19,22 @@
                     sh 'terraform init'
                     sh 'terraform plan'
                     sh 'terraform apply -auto-approve'
-                    sh 'terraform output -raw external_ip_address_vm-builder > /tmp/builder_ip'
-                    sh 'terraform output -raw external_ip_address_vm-prod > /tmp/prod_ip'
+                    def external_ip_builder = sh(script: 'terraform output -raw external_ip_address_vm-builder', returnStdout: true).trim()
+                    def external_ip_prod = sh(script: 'terraform output -raw external_ip_address_vm-prod', returnStdout: true).trim()
+                    env.ext_ip_builder = external_ip_builder
+                    env.ext_ip_prod = external_ip_prod
                     }
                 }
             }
         }
+        stage('Ansible deploy') {
+             steps {
+                script {
+                    sh """
+                    ansible-playbook -i ${env.ext_ip_builder},${env.ext_ip_prod}, -u jenkins --private-key /var/lib/jenkins/.ssh/id_ed25519 --extra-vars "builder_ip=${env.ext_ip_builder} prod_ip=${env.ext_ip_prod}" /home/serega/project/ansible/ansible.yml
+                    """
+                }
     }
+}
+}
 }
