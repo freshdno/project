@@ -45,7 +45,7 @@ resource "yandex_compute_instance" "vm-builder" {
   }
 
   metadata = {
-    ssh-keys = "serega:${file("~/.ssh/id_rsa.pub")}"
+    ssh-keys = "serega:${file("~/.ssh/id_ed25519.pub")}"
   }
 }
 resource "yandex_compute_instance" "vm-prod" {
@@ -66,7 +66,7 @@ resource "yandex_compute_instance" "vm-prod" {
   }
 
   metadata = {
-    ssh-keys = "serega:${file("~/.ssh/id_rsa.pub")}"
+    ssh-keys = "serega:${file("~/.ssh/id_ed25519.pub")}"
   }
 }
 
