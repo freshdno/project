@@ -1,14 +1,22 @@
  pipeline {
     agent any
+
     stages {
         stage('Terraform Deploy') {
-           steps {
-               dir('/home/serega/project/terraform') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'token',     variable: 'YC_TOKEN'),
+                    string(credentialsId: 'cloud', variable: 'YC_CLOUD_ID'),
+                    string(credentialsId: 'folder',variable: 'YC_FOLDER_ID')
+                ]) 
+                {
+                    dir('/home/serega/project/terraform') {
                     sh 'terraform init'
                     sh 'terraform plan'
                     sh 'terraform apply -auto-approve'
+                    }
                 }
             }
         }
- }
- }
+    }
+}
