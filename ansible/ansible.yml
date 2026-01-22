@@ -50,13 +50,8 @@
         state: started
         enabled: yes
         
-    - name: Log in to DockerHub
-      docker_login:
-        username: "{{ dockerhub_user }}"
-        password: "{{ dockerhub_pass }}"
-
     - name: Pull the Docker image from DockerHub on prod host
       command: docker pull swatout/project:latest
 
     - name: Run Docker container on prod host
-      command: docker run -p 8080:8080 -d --name my-container project:latest
+      command: docker run -p 8080:8080 -d swatout/project:latest
