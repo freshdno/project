@@ -1,13 +1,14 @@
  pipeline {
     agent any
- 
-    stage('Terraform Deploy') {
-        steps {
-             dir('/home/serega/project/terraform') {
+    stages {
+        stage('Terraform Deploy') {
+           steps {
+               dir('/home/serega/project/terraform') {
                     sh 'terraform init'
                     sh 'terraform plan'
                     sh 'terraform apply -auto-approve'
                 }
             }
         }
+ }
  }
