@@ -2,8 +2,8 @@
     agent any
     
     environment {
-        dockerhub_user = credentials('dockerhub_user')
-        dockerhub_pass = credentials('dockerhub_pass')
+        dockerhub_user = credentials('doc_user')
+        dockerhub_pass = credentials('doc_pass')
     }
 
     stages {
